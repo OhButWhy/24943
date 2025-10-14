@@ -15,6 +15,15 @@ node* create(char *str){
     return new;
 }
 
+void free_list(node *head) {
+    while (head) {
+        node *tmp = head->next;
+        free(head->string);
+        free(head);
+        head = tmp;
+    }
+}
+
 int main(){
     node *head = malloc(sizeof(node));
     head->next = NULL;
@@ -34,5 +43,6 @@ int main(){
         printf("%s", i->string);
     }
 
+    free_list(head);
     return 0;
 }
