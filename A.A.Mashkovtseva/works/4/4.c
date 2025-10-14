@@ -29,8 +29,9 @@ int main(){
         printf("Write string or write . to get all written strings\n");
     }
 
+    printf("Your strings:\n");
     for (node *i = head->next; i != NULL; i = i->next){
-        printf("Your strings:\n%s", i->string);
+        printf("%s", i->string);
     }
 
     return 0;

@@ -21,6 +21,12 @@ int main(){
         else j++;
     }
 
+    printf("Table of line ends and lengths:\n");
+    printf("%-5s %-10s %-10s\n", "Idx", "EndPos", "Length");
+    for (int k = 0; k < i; ++k) {
+        printf("%-5d %-10ld %-10ld\n", k+1, table[0][k], table[1][k]);
+    }
+
     int n = 1;
     while(n){
         printf("Enter the row idx or 0 to stop: ");
