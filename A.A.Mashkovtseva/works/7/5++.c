@@ -56,25 +56,27 @@ int main(){
             munmap(p, size);
             close(fd);
             close(terminal);
-            exit(0);
+            return 0;
         }
         else {
             buf[bytes_read] = '\0';
-            
-            int n = atoi(buf);
-            
+            char *endptr;
+            int n = strtol(buf, &endptr, 10);
+            while (*endptr == ' ' || *endptr == '\t' || *endptr == '\n') ++endptr;
+            if (buf == endptr || *endptr != '\0') {
+                printf("There are only %d rows!\n", num_lines);
+                continue;
+            }
             if (n <= 0) {
                 printf("Exiting...\n");
                 munmap(p, size);
                 close(fd);
                 close(terminal);
-                exit(0);
+                return 0;
             }
-            
             if (n > num_lines) {
                 printf("There are only %d rows!\n", num_lines);
-            }
-            else {
+            } else {
                 int length = table[1][n-1]; 
                 long end_offset = table[0][n-1];
                 long start_offset = end_offset - length; // Вычисляем начало строки

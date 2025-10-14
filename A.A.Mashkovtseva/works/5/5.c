@@ -27,13 +27,21 @@ int main(){
         printf("%-5d %-10ld %-10ld\n", k+1, table[0][k], table[1][k]);
     }
 
+    char input[100];
     int n = 1;
     while(n){
         printf("Enter the row idx or 0 to stop: ");
-        scanf("%d", &n);
+        if (!fgets(input, sizeof(input), stdin)) break;
+        char *endptr;
+        n = strtol(input, &endptr, 10);
+        while (*endptr == ' ' || *endptr == '\t' || *endptr == '\n') ++endptr;
+        if (input == endptr || *endptr != '\0') {
+            printf("There are only %d rows!\n", i);
+            continue;
+        }
         if (n < 0) printf("You should use positive number or 0 to stop!\n");
         else if (n > i) printf("There are only %d rows!\n", i);
-        else {
+        else if (n > 0) {
             lseek(fd, table[0][n-1] - table[1][n - 1], SEEK_SET);
             char buf[table[1][n-1] + 1];
             read(fd, buf, table[1][n-1]);

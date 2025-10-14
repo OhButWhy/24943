@@ -47,25 +47,28 @@ int main(){
             }
             close(fd);
             close(terminal);
-            exit(0);
+            return 0;
         }
         else {
             // Есть ввод - обрабатываем только первое число
             buf[bytes_read] = '\0';
-            
-            int n = atoi(buf);
-            
+            char *endptr;
+            int n = strtol(buf, &endptr, 10);
+            // Пропускаем пробелы и переводы строк после числа
+            while (*endptr == ' ' || *endptr == '\t' || *endptr == '\n') ++endptr;
+            if (buf == endptr || *endptr != '\0') {
+                printf("There are only %d rows!\n", i);
+                continue;
+            }
             if (n <= 0) {
                 printf("Exiting...\n");
                 close(fd);
                 close(terminal);
-                exit(0);
+                return 0;
             }
-            
             if (n > i) {
                 printf("There are only %d rows!\n", i);
-            }
-            else {
+            } else {
                 lseek(fd, table[0][n-1] - table[1][n-1], SEEK_SET);
                 char line_buf[table[1][n-1] + 1];
                 read(fd, line_buf, table[1][n-1]);
