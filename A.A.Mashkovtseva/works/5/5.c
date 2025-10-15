@@ -29,8 +29,10 @@ int main(){
     }
 
     char input[100];
+    char input[100];
     int n = 1;
-    while(n){
+    int done = 0;
+    while (!done) {
         printf("Enter the row idx or 0 to stop: ");
         if (!fgets(input, sizeof(input), stdin)) break;
         char *endptr;
@@ -40,14 +42,18 @@ int main(){
             printf("There are only %d rows!\n", i);
             continue;
         }
-        if (n < 0) printf("You should use positive number or 0 to stop!\n");
-        else if (n > i) printf("There are only %d rows!\n", i);
-        else if (n > 0) {
+        if (n < 0) {
+            printf("You should use positive number or 0 to stop!\n");
+        } else if (n > i) {
+            printf("There are only %d rows!\n", i);
+        } else if (n > 0) {
             lseek(fd, table[0][n-1] - table[1][n - 1], SEEK_SET);
             char buf[table[1][n-1] + 1];
             read(fd, buf, table[1][n-1]);
             buf[table[1][n-1]] = '\0';
             printf("%s", buf);
+        } else {
+            done = 1;
         }
     }
     

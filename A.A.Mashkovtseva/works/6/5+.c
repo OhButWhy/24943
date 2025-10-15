@@ -31,11 +31,11 @@ int main(){
         printf("%-5d %-10ld %-10ld\n", k+1, table[0][k], table[1][k]);
     }
 
-    for (;;) {
+    int done = 0;
+    while (!done) {
         printf("You have 5 seconds to enter a line number: ");
         fflush(stdout);
         sleep(5);
-        
         int bytes_read = read(terminal, buf, BUFSIZE - 1);
         if (bytes_read <= 0) {
             // Нет ввода - печатаем весь файл
@@ -47,9 +47,9 @@ int main(){
             }
             close(fd);
             close(terminal);
-            return 0;
-        }
-        else {
+            done = 1;
+            continue;
+        } else {
             // Есть ввод - обрабатываем только первое число
             buf[bytes_read] = '\0';
             char *endptr;
@@ -64,7 +64,8 @@ int main(){
                 printf("Exiting...\n");
                 close(fd);
                 close(terminal);
-                return 0;
+                done = 1;
+                continue;
             }
             if (n > i) {
                 printf("There are only %d rows!\n", i);

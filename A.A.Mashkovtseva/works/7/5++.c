@@ -44,11 +44,11 @@ int main(){
     
     char buf[BUFSIZE];
     
-    for (;;) {
+    int done = 0;
+    while (!done) {
         printf("You have 5 seconds to enter a line number: ");
         fflush(stdout);
         sleep(5);
-        
         int bytes_read = read(terminal, buf, BUFSIZE - 1);
         if (bytes_read <= 0) {
             printf("\nTime's up! Printing entire file:\n");
@@ -56,9 +56,9 @@ int main(){
             munmap(p, size);
             close(fd);
             close(terminal);
-            return 0;
-        }
-        else {
+            done = 1;
+            continue;
+        } else {
             buf[bytes_read] = '\0';
             char *endptr;
             int n = strtol(buf, &endptr, 10);
@@ -72,7 +72,8 @@ int main(){
                 munmap(p, size);
                 close(fd);
                 close(terminal);
-                return 0;
+                done = 1;
+                continue;
             }
             if (n > num_lines) {
                 printf("There are only %d rows!\n", num_lines);
