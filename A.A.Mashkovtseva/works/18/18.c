@@ -55,7 +55,7 @@ int main(int argc, char *argv[]) {
         if (group) printf("%-8s ", group->gr_name);
         else printf("%-8u", file_st.st_gid);
 
-        common ? printf(" %5lld ", (long long)file_st.st_size) : printf("     ");
+        common ? printf(" %5lld ", (long long)file_st.st_size) : printf("       ");
 
         struct tm *mt = localtime(&file_st.st_mtime);
         printf("%s %02d %02d:%02d ",
