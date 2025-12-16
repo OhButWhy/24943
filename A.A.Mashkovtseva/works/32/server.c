@@ -69,9 +69,9 @@ int main() {
         while (1) {
             client_sock = accept(server_sock, NULL, NULL);
             if (client_sock == -1) {
-                if (errno == EAGAIN || errno == EWOULDBLOCK) {
+                if (errno == EAGAIN || errno == EWOULDBLOCK) { // прям щас нет ождиающих подключений
                     break;
-                } else if (errno == EINTR) {
+                } else if (errno == EINTR) { // вызов был прерван сигналом
                     continue;
                 } else {
                     perror("accept");
